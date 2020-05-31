@@ -1,15 +1,45 @@
-## Put comments here that give an overall description of what your
-## functions do
+## makeCacheMatrix contains x and inversedMtx variables for holding matrix
+## and inversed matrix respectively, it also have functions for setting the
+## data and getting the data for decalred variables
 
-## Write a short comment describing this function
-
+## returns object with setter,getter
 makeCacheMatrix <- function(x = matrix()) {
-
+  inversedMtx <- NULL
+  
+  set <- function(mtx) {
+    x <<- mtx
+    inversedMtx <<- NULL
+  }
+  
+  get <- function()
+    x
+  
+  setInversedMatrix <- function(inversedMatrix) inversedMtx <<- inversedMatrix
+  
+  getInversedMatrix <- function()
+    inversedMtx
+  
+  list(
+    set = set,
+    get = get,
+    setInversedMatrix = setInversedMatrix,
+    getInversedMatrix = getInversedMatrix
+  )
 }
 
 
-## Write a short comment describing this function
+## returns cached inversed matrix if avialable or else will calculate and return
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  inversedMtx = x$getInversedMatrix()
+  
+  if (!is.null(inversedMtx)) {
+    message("Getting cached inveresed matrix")
+    return(inversedMtx)
+  }
+  
+  mtx <- x$get()
+  inversedMtx <- solve(mtx)
+  x$setInversedMatrix(inversedMtx)
+  inversedMtx
 }
